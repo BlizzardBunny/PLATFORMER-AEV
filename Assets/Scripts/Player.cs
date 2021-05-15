@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
             rigidbody.velocity += jumpVelocityToAdd;
             animator.ResetTrigger("Idle");
             animator.SetTrigger("Takeoff");
-            StartCoroutine(inAir(0.1f));
+            StartCoroutine(inAir(0.2f));
         }
 
         IEnumerator inAir(float delay)
