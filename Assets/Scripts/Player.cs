@@ -50,8 +50,16 @@ public class Player : MonoBehaviour
         Vector2 playerVelocity = new Vector2(controlThrow*runSpeed, rigidbody.velocity.y);
         rigidbody.velocity = playerVelocity;
 
-        bool playerHasHorizontalSpeed = Mathf.Abs(rigidbody.velocity.x) > Mathf.Epsilon;
-        animator.SetBool("Run", playerHasHorizontalSpeed);
+        if (Mathf.Abs(rigidbody.velocity.x) > Mathf.Epsilon)
+        {
+            animator.SetTrigger("Run");
+            animator.ResetTrigger("Idle");
+        }
+        else
+        {
+            animator.ResetTrigger("Run");
+            animator.SetTrigger("Idle");
+        }
     }
 
     private void Jump()
@@ -65,6 +73,25 @@ public class Player : MonoBehaviour
         {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpSpeed);
             rigidbody.velocity += jumpVelocityToAdd;
+            animator.ResetTrigger("Idle");
+            animator.SetTrigger("Takeoff");
+            StartCoroutine(inAir(0.2f));
+        }
+
+        IEnumerator inAir(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            animator.ResetTrigger("Takeoff");
+            animator.SetTrigger("Midair");
+        }
+
+        if (Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon)
+        {
+            animator.SetTrigger("Midair");
+        }
+        else
+        {
+            animator.ResetTrigger("Midair");
         }
     }
 
