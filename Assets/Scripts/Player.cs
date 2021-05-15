@@ -82,17 +82,11 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(delay);
             animator.ResetTrigger("Takeoff");
-            animator.SetTrigger("Midair");
+            animator.SetBool("Midair", true);
         }
 
-        if (Mathf.Abs(rigidbody.velocity.y) > Mathf.Epsilon)
-        {
-            animator.SetTrigger("Midair");
-        }
-        else
-        {
-            animator.ResetTrigger("Midair");
-        }
+        bool hasVerticalVelocity = Mathf.Abs(rigidbody.velocity.y) > 1;
+        animator.SetBool("Midair", hasVerticalVelocity);
     }
 
     private void FlipSprite()
